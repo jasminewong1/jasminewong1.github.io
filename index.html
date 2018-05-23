@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+    <head>
+         <!--import jquery-->
+        <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+
+        <title>Sudoku</title>
+        <style>
+            #game{
+            width: 500px;
+            margin: auto;
+            }
+
+            body {
+                font-family: Arial;
+            }
+
+            .given {
+                background-color: #ccccff;
+            }
+
+
+            table {
+                background-color: black;
+            }
+            td {
+                height: 50px;
+                width: 50px;
+                background-color: white;
+                text-align: center;
+                font-size: 24px;
+                font-family: Arial;
+            }
+            .playable {
+                height: 50px;
+                width: 50px;
+                background-color: white;
+                text-align: center;
+                font-size: 23px;
+                padding: 0;
+                margin: 0;
+                border: 0px solid;
+                font-family: Arial;
+            }
+
+            .invalid {
+                background-color: red;
+            }
+
+            .right {
+                border-right: 5px solid black;
+            }
+
+            .bottom{
+                border-bottom: 5px solid black;
+          }
+
+        </style>
+    </head>
+    <body>
+      <body>
+        <div style="font-family: Georgia;">
+            <h1 style="text-align:center;"><font color="#8080ff">Sudoku!</font></h1>
+        </div>
+        <div id="game">
+        <table>
+           <tr>
+
+                <td id="00"></td>
+                <td id="01"></td>
+                <td id="02" class="right"></td>
+                <td id="03"></td>
+                <td id="04"></td>
+                <td id="05" class="right"></td>
+                <td id="06"></td>
+                <td id="07"></td>
+                <td id="08"></td>
+            </tr>
+            <tr>
+                <td id="10"></td>
+                <td id="11"></td>
+                <td id="12" class="right"></td>
+                <td id="13"></td>
+                <td id="14"></td>
+                <td id="15" class="right"></td>
+                <td id="16"></td>
+                <td id="17"></td>
+                <td id="18"></td>
+            </tr>
+            <tr>
+                <td id="20" class="bottom"></td>
+                <td id="21" class="bottom"></td>
+                <td id="22" class="bottom right"></td>
+                <td id="23" class="bottom"></td>
+                <td id="24" class="bottom"></td>
+                <td id="25" class="bottom right"></td>
+                <td id="26" class="bottom"></td>
+                <td id="27" class="bottom"></td>
+                <td id="28" class="bottom"></td>
+            </tr>
+ <tr>
+                <td id="30"></td>
+                <td id="31"></td>
+                <td id="32" class="right"></td>
+                <td id="33"></td>
+                <td id="34"></td>
+                <td id="35" class="right"></td>
+                <td id="36"></td>
+                <td id="37"></td>
+                <td id="38"></td>
+            </tr>
+            <tr>
+                <td id="40"></td>
+                <td id="41"></td>
+                <td id="42" class="right"></td>
+                <td id="43"></td>
+                <td id="44"></td>
+                <td id="45" class="right"></td>
+                <td id="46"></td>
+                <td id="47"></td>
+                <td id="48"></td>
+            </tr>
+            <tr>
+                <td id="50" class="bottom"></td>
+                <td id="51" class="bottom"></td>
+                <td id="52" class="bottom right"></td>
+                <td id="53" class="bottom"></td>
+                <td id="54" class="bottom"></td>
+                <td id="55" class="bottom right"></td>
+                <td id="56" class="bottom"></td>
+                <td id="57" class="bottom"></td>
+                <td id="58" class="bottom"></td>
+            </tr>
+            <tr>
+                <td id="60"></td>
+                <td id="61"></td>
+                <td id="62" class="right"></td>
+                <td id="63"></td>
+                <td id="64"></td>
+                <td id="65" class="right"></td>
+                <td id="66"></td>
+                <td id="67"></td>
+                <td id="68"></td>
+            </tr>
+            <tr>
+                <td id="70"></td>
+                <td id="71"></td>
+                <td id="72" class="right"></td>
+                <td id="73"></td>
+                <td id="74"></td>
+                <td id="75" class="right"></td>
+                <td id="76"></td>
+                <td id="77"></td>
+                <td id="78"></td>
+            </tr>
+            <tr>
+                <td id="80"></td>
+                <td id="81"></td>
+                <td id="82" class="right"></td>
+                <td id="83"></td>
+                <td id="84"></td>
+                <td id="85" class="right"></td>
+                <td id="86"></td>
+                <td id="87"></td>
+                <td id="88"></td>
+            </tr>
+
+        </table><br>
+        </div>
+
+          <script>
+            let board = [];
+            let row;
+            let col;
+
+            //input numbers on puzzle
+
+            board[0] = [1, ,7, , , ,5, ,2]
+            board[1] = [ ,5, ,4,1,7,9, , ]
+            board[2] = [ ,8, , ,5,2, ,4, ]
+            board[3] = [7, , ,8, ,3,2, , ]
+            board[4] = [ ,3, ,2, , , ,7,1]
+            board[5] = [6, , , , ,4,3, ,8]
+            board[6] = [5, ,2,7, , , ,3, ]
+            board[7] = [ ,9,8, ,2, ,7, , ]
+            board[8] = [4, ,1, ,3, , ,2,5]
+
+            for (let i = 0; i < 9; i++) {
+                row = i;
+                for (let j = 0; j < 9; j++) {
+                    col = j;
+
+                    $('#'+ row + col).html(board[i][j]);
+                    if (board[i][j]) {
+                        $('#'+i + j).addClass("given")
+                    }
+                    else {
+                        $('#'+i + j).html('<input class="playable" maxlength="1" id="input' + i + j + '"type="text">')
+                    }
+                }
+            }
+
+            let selectedBox = "";
+            let value;
+            let number;
+
+            $('.playable').keyup(function() {
+
+    //for loops check each box to make sure there isn't 2 of same input
+
+                    for (row = 0; row < 9; row++){
+                        for (col = 0; col < 9; col++){
+                            value = $('#input' + row + col).val();
+
+                            if (value >= 1 && value <= 9 && !valueUsed(value, row, col)) {
+                                board[row][col] = parseInt(value)
+                            }
+
+                            else if (value == '') {
+                                $('#input' + row + col).removeClass("invalid");
+                            }
+                            else {
+                                $('#input' + row + col).addClass("invalid");
+                                // alert("Illegal value!")
+                            }
+                        }
+                    }
+            })
+
+            function valueUsed(num, row, col) {
+                if (row < 3 && col < 3) {
+                    for (let i = 0; i < 3; i++) {
+                        for (let j = 0; j < 3; j++) {
+                            if (board[i][j] == parseInt(num) && board[row][col] != num) {
+                            return true;
+                            }
+                        }
+                    }
+                }
+
+                else if (row < 3 && col < 6) {
+                    for (let i = 0; i < 3; i++) {
+                        for (let j = 3; j < 6; j++) {
+                            if (board[i][j] == parseInt(num) && board[row][col] != num) {
+                            return true;
+                            }
+                        }
+                    }
+                }
+
+                else if (row < 3 && col < 9) {
+                    for (let i = 0; i < 3; i++) {
+                        for (let j = 6; j < 9; j++) {
+                            if (board[i][j] == parseInt(num) && board[row][col] != num) {
+                            return true;
+                            }
+                        }
+                    }
+                }
+
+                else if (row < 6 && col < 3) {
+                    for (let i = 3; i < 6; i++) {
+                        for (let j = 0; j < 3; j++) {
+                            if (board[i][j] == parseInt(num) && board[row][col] != num) {
+                            return true;
+                            }
+                        }
+                    }
+                }
+
+                else if (row < 6 && col < 6) {
+                    for (let i = 3; i < 6; i++) {
+                        for (let j = 3; j < 6; j++) {
+                            if (board[i][j] == parseInt(num) && board[row][col] != num) {
+                            return true;
+                            }
+                        }
+                    }
+                }
+
+                else if (row < 6 && col < 9) {
+                    for (let i = 3; i < 6; i++) {
+                        for (let j = 6; j < 9; j++) {
+                            if (board[i][j] == parseInt(num) && board[row][col] != num) {
+                            return true;
+                            }
+                        }
+                    }
+                }
+
+                else if (row < 9 && col < 3) {
+                    for (let i = 6; i < 9; i++) {
+                        for (let j = 0; j < 3; j++) {
+                            if (board[i][j] == parseInt(num) && board[row][col] != num) {
+                            return true;
+                            }
+                        }
+                    }
+                }
+
+                else if (row < 9 && col < 6) {
+                    for (let i = 6; i < 9; i++) {
+                        for (let j = 3; j < 6; j++) {
+                            if (board[i][j] == parseInt(num) && board[row][col] != num) {
+                            return true;
+                            }
+                        }
+                    }
+                }
+
+                else if (row < 9 && col < 9) {
+                    for (let i = 6; i < 9; i++) {
+                        for (let j = 6; j < 9; j++) {
+                            if (board[i][j] == parseInt(num) && board[row][col] != num) {
+                            return true;
+                            }
+                        }
+                    }
+                }
+
+    //check rows
+
+            for (let i = 0; i < 9; i++) {
+                j = col
+                if (board[i][j] == parseInt(num) && board[row][col] != num) {
+                    return true;
+                }
+            }
+
+    //check columns
+
+            for (let j = 0; j < 9; j++) {
+                i = row
+                if (board[i][j] == parseInt(num) && board[row][col] != num) {
+                    return true;
+                }
+            }
+        }
+
+            </script>
+    </body>
+</html>
+
+
