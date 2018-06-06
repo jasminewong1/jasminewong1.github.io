@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
-    <head>
+
+       <head>
          <!--import jquery-->
         <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 
         <title>Sudoku</title>
         <style>
+
             #game{
             width: 500px;
             margin: auto;
@@ -13,6 +15,11 @@
 
             body {
                 font-family: Arial;
+                background-image: url("jj.1.png");
+                background-repeat: no-repeat;
+                background-attachment: scroll;
+                background-size: cover;
+                background-position: center;
             }
 
             .given {
@@ -54,13 +61,19 @@
             .bottom{
                 border-bottom: 5px solid black;
           }
-
+            #clock{
+                width: 135px;
+                margin: auto;
+            }
         </style>
     </head>
     <body>
       <body>
         <div style="font-family: Georgia;">
             <h1 style="text-align:center;"><font color="#8080ff">Sudoku!</font></h1>
+        </div>
+        <div style="font-family: Georgia;">
+            <h2 style="text-align:center;"><font color="#000000">Melissa Rios & Jasmine Wong</font></h1>
         </div>
         <div id="game">
         <table>
@@ -167,11 +180,18 @@
 
         </table><br>
         </div>
+            <div id ="clock">
+         <h1><time>00:00:00</time></h1>
+        <button id="start">start</button>
+        <button id="stop">stop</button>
+        <button id="clear">clear</button>
+        </div>
 
           <script>
             let board = [];
             let row;
             let col;
+
 
             //input numbers on puzzle
 
@@ -214,6 +234,7 @@
 
                             if (value >= 1 && value <= 9 && !valueUsed(value, row, col)) {
                                 board[row][col] = parseInt(value)
+                                checkwin();
                             }
 
                             else if (value == '') {
@@ -337,8 +358,61 @@
             }
         }
 
+            //check win function
+
+            function checkwin() {
+                for (let i = 0; i < 9; i++) {
+                    for (let j = 0; j < 9; j++) {
+                        if (!board[i][j] || $('#input' + i + j).hasClass("invalid")) {
+                            return false;
+                        }
+                    }
+                }
+                alert("YOU DID IT!")
+                return true;
+            }
+
+                var time = document.getElementsByTagName('time')[0],
+                start = document.getElementById('start'),
+                stop = document.getElementById('stop'),
+                clear = document.getElementById('clear'),
+                seconds = 0, minutes = 0, hours = 0,
+                t;
+
+            function add() {
+                seconds++;
+                if (seconds >= 60) {
+                    seconds = 0;
+                    minutes++;
+                    if (minutes >= 60) {
+                        minutes = 0;
+                        hours++;
+                    }
+                }
+
+                time.textContent = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
+
+                timer();
+            }
+            function timer() {
+                t = setTimeout(add, 1000);
+            }
+            timer();
+
+            /* Start button */
+            start.onclick = timer;
+
+
+            /* Stop button */
+            stop.onclick = function() {
+                clearTimeout(t);
+            }
+
+            /* Clear button */
+            clear.onclick = function() {
+                time.textContent = "00:00:00";
+                seconds = 0; minutes = 0; hours = 0;
+            }
             </script>
     </body>
 </html>
-
-
